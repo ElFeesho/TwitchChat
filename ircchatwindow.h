@@ -2,29 +2,32 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QString>
 #include "twitchchat.h"
 #include "twitchchannel.h"
 
 namespace Ui {
-class MainWindow;
+class IRCChatWindow;
 }
 
-class MainWindow : public QMainWindow
+class IrcChatWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit IrcChatWindow(const QString &nick, const QString &channel, QWidget *parent = 0);
+    ~IrcChatWindow();
 public slots:
     void enableUI();
 private slots:
     void on_messageInput_returnPressed();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::IRCChatWindow *ui;
     twitchchat chat;
-    twitchchannel channel;
+    twitchchannel channelModel;
+    QString nickName;
+    QString channelName;
 };
 
 #endif // MAINWINDOW_H

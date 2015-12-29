@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <QFile>
 
-twitchchat::twitchchat(const QString &twitchOAuthToken, QObject *parent) : QObject(parent), ircSocket(parent)
+twitchchat::twitchchat(const QString &twitchOAuthToken, const QString &nick, const QString &channel, QObject *parent) : QObject(parent), nickName(nick), channelName(channel), ircSocket(parent)
 {
     QFile oauthToken(twitchOAuthToken);
     oauthToken.open(QIODevice::ReadOnly);
@@ -20,26 +20,24 @@ void twitchchat::handleNumeric(int numeric)
 {
     if (numeric == 376)
     {
-        ircSocket.write("JOIN #ismailzd\r\n");
+        ircSocket.write((QString("JOIN ")+channelName+QString("\r\n")).toStdString().c_str());
     }
 }
 
 void twitchchat::sendMessage(const QString &message)
 {
-    ircSocket.write((QString("PRIVMSG #ismailzd :")+message+QString("\r\n")).toStdString().c_str());
+    ircSocket.write((QString("PRIVMSG ")+channelName+QString(" :")+message+QString("\r\n")).toStdString().c_str());
 }
 
 void twitchchat::ircConnected()
 {
-    qDebug("Connected!");
     emit connectionEstablished();
     ircSocket.write(QByteArray((QString("PASS ") + oauthToken + QString("\r\n")).toStdString().c_str()));
-    ircSocket.write(QByteArray("NICK elfeesho\r\n"));
+    ircSocket.write((QString("NICK ")+nickName+QString("\r\n")).toStdString().c_str());
 }
 
 void twitchchat::canRead()
 {
-    qDebug("Can read");
     bool hitLineFeed = false;
     char msgBuf[1024] = { 0 };
     QString message;
@@ -82,7 +80,6 @@ void twitchchat::canRead()
             ircSocket.write((QString("PONG ")+server+QString("\r\n")).toStdString().c_str());
             emit chatMessage(ircmessage(true, server, "ping received"));
         }
-        qDebug("IRC MESSAGE %s", ircMessage.toStdString().c_str());
     }
 
 }

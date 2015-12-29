@@ -13,14 +13,17 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
     twitchchat.cpp \
     twitchchannel.cpp \
-    ircmessage.cpp
+    ircmessage.cpp \
+    ircchatwindow.cpp
 
-HEADERS  += mainwindow.h \
+HEADERS  += \
     twitchchat.h \
     twitchchannel.h \
-    ircmessage.h
+    ircmessage.h \
+    ircchatwindow.h
 
-FORMS    += mainwindow.ui
+FORMS    += \
+    ircchatwindow.ui \
+    logindialog.ui

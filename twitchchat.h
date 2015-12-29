@@ -10,7 +10,7 @@ class twitchchat : public QObject
 {
     Q_OBJECT
 public:
-    explicit twitchchat(const QString &oauthTokenFile, QObject *parent = 0);
+    explicit twitchchat(const QString &oauthTokenFile, const QString &nick, const QString &channel, QObject *parent = 0);
 
     void sendMessage(const QString &message);
     void handleNumeric(int numeric);
@@ -24,6 +24,8 @@ public slots:
 private:
     QTcpSocket ircSocket;
     QString oauthToken;
+    QString nickName;
+    QString channelName;
 };
 
 #endif // TWITCHCHAT_H
