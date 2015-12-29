@@ -15,11 +15,48 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item>
-     <widget class="QListView" name="chatMessages"/>
+     <widget class="QListView" name="chatMessages">
+      <property name="font">
+       <font>
+        <family>DejaVu Sans Mono</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:#333;
+color:#ddd;
+border:1px solid #fff;
+padding:5px;</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="messageInput"/>
+     <widget class="QLineEdit" name="messageInput">
+      <property name="styleSheet">
+       <string notr="true">background-color:#333;
+color:#ddd;
+border:1px solid #fff;
+padding:5px;</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
