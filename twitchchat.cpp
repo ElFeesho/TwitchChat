@@ -16,6 +16,12 @@ twitchchat::twitchchat(const QString &twitchOAuthToken, QObject *parent) : QObje
     ircSocket.connectToHost("irc.twitch.tv", 6667);
 }
 
+void twitchchat::sendMessage(const QString &message)
+{
+    ircSocket.write((QString("PRIVMSG #ElFeesho :")+message+QString("\r\n")).toStdString().c_str());
+}
+
+
 void twitchchat::ircConnected()
 {
     qDebug("Connected!");

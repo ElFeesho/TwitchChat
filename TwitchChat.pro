@@ -14,9 +14,13 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    twitchchat.cpp
+    twitchchat.cpp \
+    twitchchannel.cpp \
+    ircmessage.cpp
 
 HEADERS  += mainwindow.h \
-    twitchchat.h
+    twitchchat.h \
+    twitchchannel.h \
+    ircmessage.h
 
 FORMS    += mainwindow.ui
