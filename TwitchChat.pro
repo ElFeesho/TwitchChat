@@ -16,13 +16,15 @@ SOURCES += main.cpp\
     twitchchat.cpp \
     twitchchannel.cpp \
     ircmessage.cpp \
-    ircchatwindow.cpp
+    ircchatwindow.cpp \
+    logindialog.cpp
 
 HEADERS  += \
     twitchchat.h \
     twitchchannel.h \
     ircmessage.h \
-    ircchatwindow.h
+    ircchatwindow.h \
+    logindialog.h
 
 FORMS    += \
     ircchatwindow.ui \
