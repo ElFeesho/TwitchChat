@@ -6,11 +6,13 @@
 class ircmessage
 {
 public:
-    ircmessage(const QString &sender, const QString &message);
+    ircmessage(bool serverMessage, const QString &sender, const QString &message);
 
+    bool is_server_message();
     QString message_sender();
     QString message_data();
 private:
+    bool _serverMessage;
     QString _sender;
     QString _message;
 };

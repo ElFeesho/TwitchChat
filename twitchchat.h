@@ -13,6 +13,7 @@ public:
     explicit twitchchat(const QString &oauthTokenFile, QObject *parent = 0);
 
     void sendMessage(const QString &message);
+    void handleNumeric(int numeric);
 signals:
     void connectionEstablished();
     void chatMessage(ircmessage message);

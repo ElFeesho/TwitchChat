@@ -27,7 +27,7 @@ void MainWindow::on_messageInput_returnPressed()
 {
     qDebug("WOOP : %s", ui->messageInput->text().toStdString().c_str());
     chat.sendMessage(ui->messageInput->text());
-    channel.on_chatMessage(ircmessage("ElFeesho", ui->messageInput->text()));
+    channel.on_chatMessage(ircmessage(false, "ElFeesho", ui->messageInput->text()));
 
     ui->messageInput->clear();
 }

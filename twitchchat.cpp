@@ -16,11 +16,18 @@ twitchchat::twitchchat(const QString &twitchOAuthToken, QObject *parent) : QObje
     ircSocket.connectToHost("irc.twitch.tv", 6667);
 }
 
-void twitchchat::sendMessage(const QString &message)
+void twitchchat::handleNumeric(int numeric)
 {
-    ircSocket.write((QString("PRIVMSG #ElFeesho :")+message+QString("\r\n")).toStdString().c_str());
+    if (numeric == 376)
+    {
+        ircSocket.write("JOIN #ismailzd\r\n");
+    }
 }
 
+void twitchchat::sendMessage(const QString &message)
+{
+    ircSocket.write((QString("PRIVMSG #ismailzd :")+message+QString("\r\n")).toStdString().c_str());
+}
 
 void twitchchat::ircConnected()
 {
@@ -28,7 +35,6 @@ void twitchchat::ircConnected()
     emit connectionEstablished();
     ircSocket.write(QByteArray((QString("PASS ") + oauthToken + QString("\r\n")).toStdString().c_str()));
     ircSocket.write(QByteArray("NICK elfeesho\r\n"));
-    ircSocket.write("JOIN #ElFeesho\r\n");
 }
 
 void twitchchat::canRead()
@@ -43,7 +49,40 @@ void twitchchat::canRead()
         message.append(QString::fromLocal8Bit(msgBuf, readBytes));
         hitLineFeed = message.endsWith("\r\n");
     }
-    qDebug("RECV: %s", message.toStdString().c_str());
-}
 
-// TEA TIME
+    foreach(QString ircMessage, message.split("\r\n"))
+    {
+        if (ircMessage.startsWith(":"))
+        {
+            QStringList messageComponents = ircMessage.split(" ");
+            bool isNumber = false;
+            messageComponents.at(1).toInt(&isNumber);
+            if (isNumber)
+            {
+                handleNumeric(messageComponents.at(1).toInt());
+                QString sender =  messageComponents.at(0);
+                sender = sender.right(sender.length()-1);
+                emit chatMessage(ircmessage(true, sender, ircMessage.right(ircMessage.length()-sender.length()-1)));
+            }
+            else if(messageComponents.at(1) == QString("PRIVMSG"))
+            {
+                QString nick = messageComponents.at(0);
+                nick.truncate(nick.indexOf('!'));
+                nick = nick.right(nick.length()-1);
+                QString privmesg = ircMessage.mid(ircMessage.indexOf(':', ircMessage.indexOf(':')+1)+1);
+                emit chatMessage(ircmessage(false, nick, privmesg));
+            }
+
+        }
+        else if(ircMessage.startsWith("PING"))
+        {
+            // If we get a ping, we should be polite and pong
+            QString server = ircMessage.split(":").at(1);
+            qDebug("Sending pong to %s", server.toStdString().c_str());
+            ircSocket.write((QString("PONG ")+server+QString("\r\n")).toStdString().c_str());
+            emit chatMessage(ircmessage(true, server, "ping received"));
+        }
+        qDebug("IRC MESSAGE %s", ircMessage.toStdString().c_str());
+    }
+
+}

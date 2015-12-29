@@ -1,8 +1,13 @@
 #include "ircmessage.h"
 
-ircmessage::ircmessage(const QString &sender, const QString &message) : _sender(sender), _message(message)
+ircmessage::ircmessage(bool serverMessage, const QString &sender, const QString &message) : _serverMessage(serverMessage), _sender(sender), _message(message)
 {
 
+}
+
+bool ircmessage::is_server_message()
+{
+    return _serverMessage;
 }
 
 QString ircmessage::message_sender()
